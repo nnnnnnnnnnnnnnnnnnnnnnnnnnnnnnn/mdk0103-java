@@ -1,7 +1,6 @@
 package exam1;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -9,8 +8,8 @@ import java.util.Scanner;
 
 public class FinancialCalculator {
 static BigDecimal[] spendingList = new BigDecimal[30];
-static Scanner scanner = new Scanner(System.in);
-    private static void menu() {
+public static Scanner scanner = new Scanner(System.in);
+    public static void menu() {
         do {
             boolean correct;
             System.out.println("\n---Меню---");
@@ -20,8 +19,8 @@ static Scanner scanner = new Scanner(System.in);
             System.out.println("4 – Показать сумму расходов в разных валютах");
             System.out.println("0 – Выход");
             do {
-                correct = true;
                 System.out.print("Для выбора введите номер пункта: ");
+                correct = true;
                 String input = scanner.next();
                 switch (input) {
                     case "1":
@@ -41,7 +40,7 @@ static Scanner scanner = new Scanner(System.in);
                         break;
                     default:
                         correct = false;
-                        System.out.println("Неверная комманда, попробуйте еще раз");
+                        System.out.println("Неверная команда, попробуйте еще раз");
                         break;
                 }
             }
@@ -49,8 +48,7 @@ static Scanner scanner = new Scanner(System.in);
         } while (true);
     }
 
-    private static void setDaySpending() {
-        // not negative
+    public static void setDaySpending() {
         System.out.println("\n---Установка значений---");
         while (true) {
             boolean correct = false;
@@ -102,18 +100,19 @@ static Scanner scanner = new Scanner(System.in);
 
     }
 
-    private static void showMonthSpending() {
-        System.out.println("\n---Вывод всех трат по дням за месяц---");
+    public static void showMonthSpending() {
+        String out = "\n---Вывод всех трат по дням за месяц---\n";
         for (int i = 0; i < spendingList.length; i++) {
-            System.out.printf("%s-й день: ",i+1);
+            out += String.format("%s-й день: ",i+1);
             if (spendingList[i].equals(BigDecimal.valueOf(-1)))
-                System.out.println("не установлено");
+                out += "не установлено\n";
             else
-                System.out.println(spendingList[i]+" руб");
+                out += String.format("%s руб\n",spendingList[i].setScale(2, RoundingMode.HALF_UP));
         }
+        System.out.print(out);
     }
 
-    private static int getBiggestDecimal() {
+    public static int getBiggestDecimal() {
         BigDecimal current = spendingList[0];
 
         for (int i = 1; i < spendingList.length; i++) {
@@ -128,16 +127,17 @@ static Scanner scanner = new Scanner(System.in);
         return -1;
     }
 
-    private static void getBiggestDay() {
-        System.out.println("\n---Самая большая сумма---");
+    public static void getBiggestDay() {
+        String out = "\n---Самая большая сумма---\n";
         int index = getBiggestDecimal();
         if (index < 0)
-            System.out.println("Вы не ввели ни одного значения");
+            out += "Вы не ввели ни одного значения\n";
         else
-            System.out.printf("%s-й день: %s руб%n",index+1, spendingList[index]);
+            out += String.format("%s-й день: %s руб\n",index+1, spendingList[index]);
+        System.out.print(out);
     }
 
-    private static void getConvertedSum() {
+    public static void getConvertedSum() {
         BigDecimal euro = BigDecimal.valueOf(0.010);
         BigDecimal dollar = BigDecimal.valueOf(0.011);
         BigDecimal yuan = BigDecimal.valueOf(0.079);
@@ -145,13 +145,14 @@ static Scanner scanner = new Scanner(System.in);
         for(BigDecimal amount : spendingList)
             if (amount.compareTo(BigDecimal.ZERO) > 0)
                 sum= sum.add(amount);
-        System.out.println("\n---Сумма затрат в других валютах---");
-        System.out.printf("В долларах: $%s%n",sum.multiply(dollar).setScale(2, RoundingMode.HALF_UP));
-        System.out.printf("В евро: €%s%n",sum.multiply(euro).setScale(2, RoundingMode.HALF_UP));
-        System.out.printf("В юанях: ¥%s%n",sum.multiply(yuan).setScale(2, RoundingMode.HALF_UP));
+        String out = "\n---Сумма затрат в других валютах---\n";
+        out += String.format("В долларах: $%s\n",sum.multiply(dollar).setScale(2, RoundingMode.HALF_UP));
+        out += String.format("В евро: €%s\n",sum.multiply(euro).setScale(2, RoundingMode.HALF_UP));
+        out += String.format("В юанях: ¥%s\n",sum.multiply(yuan).setScale(2, RoundingMode.HALF_UP));
+        System.out.print(out);
     }
 
-    private static void exitProgram() {
+    public static void exitProgram() {
         System.out.println("\nПрограмма закрывается, до встречи!");
         System.exit(0);
     }
@@ -159,5 +160,9 @@ static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         Arrays.fill(spendingList, BigDecimal.valueOf(-1));
         menu();
+
     }
+
 }
+
+
