@@ -1,5 +1,6 @@
 package java_base;
 
+
 import java.util.Scanner;
 
 public class Dishwasher {
